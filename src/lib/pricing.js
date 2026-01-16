@@ -16,22 +16,22 @@ function deg2rad(deg) {
 }
 
 export function calculatePrice(distance, weightKg) {
-  let price = 0;
-  const isHeavy = weightKg > 5;
-  
-  if (distance <= 200) {
-      const rate = isHeavy ? 7 : 4;
-      price = distance * rate;
-  } else {
-      // First 200km
-      const first200Rate = isHeavy ? 7 : 4;
-      price += 200 * first200Rate;
-      
-      // Remaining distance (> 200km)
-      // "after that make 4 km for both" -> 4 rs/km
-      const remainingDist = distance - 200;
-      price += remainingDist * 4;
+  // Base price calculation
+  let price = 45 + (0.5 * distance);
+
+  // Determine weight multiplier
+  let weightMultiplier;
+  if (weightKg <= 0.1) { // less than or equal to 100 gm
+    weightMultiplier = 1;
+  } else if (weightKg > 0.1 && weightKg <= 2) { // 101 gm to 2 kg
+    weightMultiplier = 1.5;
+  } else if (weightKg > 2 && weightKg <= 5) { // 2 kg to 5 kg
+    weightMultiplier = 2;
+  } else { // Assuming weights over 5kg also get 2x as per the last specified tier
+    weightMultiplier = 2;
   }
   
-  return Math.round(price);
+  const finalPrice = price * weightMultiplier;
+  
+  return Math.round(finalPrice);
 }

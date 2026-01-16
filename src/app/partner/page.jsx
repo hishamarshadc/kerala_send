@@ -6,7 +6,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { GlassButton } from "@/components/ui/GlassButton";
 import Link from "next/link";
 import { MapPin, ArrowLeft, Package, Navigation, CheckCircle } from "lucide-react";
-import { fetchParcels, acceptParcelRequest } from "@/app/actions";
+import { fetchParcels, acceptParcelRequest, setupDemoData } from "@/app/actions";
 
 const Map = dynamic(() => import('@/components/Map'), { 
   ssr: false,
@@ -16,9 +16,8 @@ const Map = dynamic(() => import('@/components/Map'), {
 export default function PartnerPage() {
   const [parcels, setParcels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [demoData, setDemoData] = useState(null);
 
-  // In a real app, we would use geolocation to center the map and filter parcels.
-  // Here we just fetch all pending parcels for the demo.
   const loadParcels = async () => {
     setLoading(true);
     const data = await fetchParcels();
@@ -27,11 +26,17 @@ export default function PartnerPage() {
   };
 
   useEffect(() => {
-    loadParcels();
+    async function initialize() {
+        await loadParcels();
+        const demoIds = await setupDemoData();
+        setDemoData(demoIds);
+    }
+    initialize();
   }, []);
 
   const handleAccept = async (id) => {
-    await acceptParcelRequest(id);
+    if (!demoData) return alert("Demo data not loaded yet, please wait.");
+    await acceptParcelRequest(id, demoData.dpId);
     await loadParcels(); // Refresh list
     alert("Parcel Accepted! Customer has been notified.");
   };
@@ -71,7 +76,7 @@ export default function PartnerPage() {
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex items-center gap-2">
                                         <Package size={18} className="text-gray-500" />
-                                        <h3 className="font-semibold">Parcel #{parcel.id}</h3>
+                                        <h3 className="font-semibold">Parcel #{parcel.id.substring(0,8)}...</h3>
                                         <span className="text-xs text-gray-500">({parcel.weight} kg)</span>
                                     </div>
                                     <div className="font-bold text-green-600">
@@ -91,7 +96,7 @@ export default function PartnerPage() {
                                         <div className="w-2 h-2 rounded-full bg-green-400 mt-1.5" />
                                         <div>
                                             <p className="font-medium">Drop</p>
-                                            <p className="text-xs text-gray-500">Lat: {parcel.drop.lat.toFixed(3)}, Lng: {parcel.drop.lng.toFixed(3)}</p>
+                                            <p className="text-xs text-gray-500">Lat: {parcel.drop_off.lat.toFixed(3)}, Lng: {parcel.drop_off.lng.toFixed(3)}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -117,8 +122,8 @@ export default function PartnerPage() {
                     zoom={7} 
                     center={[10.5, 76.2]} 
                     markers={parcels.flatMap(p => [
-                        { position: p.pickup, popup: `Pickup #${p.id} (₹${p.price})` },
-                        { position: p.drop, popup: `Drop #${p.id}` }
+                        { position: p.pickup, popup: `Pickup #${p.id.substring(0,8)} (₹${p.price})` },
+                        { position: p.drop_off, popup: `Drop #${p.id.substring(0,8)}` }
                     ])} 
                 />
             </div>
