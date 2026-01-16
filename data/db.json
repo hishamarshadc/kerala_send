@@ -1,0 +1,34 @@
+{
+  "parcels": [
+    {
+      "customerName": "Demo User",
+      "pickup": {
+        "lat": 10.86573526196246,
+        "lng": 75.90024824227234,
+        "name": "Selected Location"
+      },
+      "drop": {
+        "lat": 10.836016374718014,
+        "lng": 76.04681066725433,
+        "name": "Selected Location"
+      },
+      "weight": 2,
+      "date": "2026-01-17",
+      "price": 65,
+      "distance": 16.3,
+      "id": "re0y9628u",
+      "createdAt": "2026-01-16T07:19:22.103Z",
+      "status": "accepted",
+      "partnerId": "dp_user_1"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "mtwi9kx61",
+      "parcelId": "re0y9628u",
+      "message": "Your parcel to Selected Location has been accepted by a traveler!",
+      "read": false,
+      "timestamp": "2026-01-16T07:19:33.605Z"
+    }
+  ]
+}
