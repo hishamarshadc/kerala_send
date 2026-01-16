@@ -2,6 +2,10 @@
 
 A peer-to-peer logistics marketplace for Kerala, connecting travelers with parcel senders.
 
+# Demo site
+
+https://kerala-send-ahwwkdsdv-hisham-cs-projects.vercel.app/
+
 ## Features
 
 - **Role Selection:** Customer (Sender) or Delivery Partner (Traveler).
