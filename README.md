@@ -4,7 +4,7 @@ A peer-to-peer logistics marketplace for Kerala, connecting travelers with parce
 
 # Demo site
 
-https://kerala-send-ahwwkdsdv-hisham-cs-projects.vercel.app/
+https://kerala-send.vercel.app/
 
 ## Features
 
